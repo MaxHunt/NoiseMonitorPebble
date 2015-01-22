@@ -56,7 +56,9 @@ var inNoiseMon = false;
 var main = new UI.Card({   
    icon: 'images/menu_icon.png',
    subtitle: 'Noise Calculator',
-   body: 'Press the select button to start the Noise Monitor. The amount of smaples to be taken is ' + noOfTakenSamples +"." ,
+   body: 'Press the select button to start the Noise Monitor. The amount of smaples to be taken is ' + 
+          noOfTakenSamples +
+         '. Once pressed you have 5 seconds before the meseaurment starts to place the pebble on a stable surface.'  ,
    scrollable: true
 });
 
@@ -67,15 +69,20 @@ main.on('click', 'select', onClick);
 
 
 function onClick(e) {
-   inNoiseMon = true;
-   console.log('Entered Counter');
-   TitleText.text('Counter Screen');
-   CountScreen.insert(0,TitleText);
-   console.log("Title text added");
-   CountScreen.show();
-   CountScreen.on('click','back',onAccelBack);   
-   Accel.on('data', onPeek);         
+   CountScreen.on('click','back',onAccelBack);
+   //wait function Give time to Settall
+   console.log("Waiting");
+   setTimeout(function () {
+      inNoiseMon = true;
+      console.log('Entered Counter');
+      TitleText.text('Counter Screen');
+      CountScreen.insert(0,TitleText);
+      console.log("Title text added");
+      CountScreen.show();         
+      Accel.on('data', onPeek);      
+   }, 3000);           
 }
+
 //Close Screen and Stop loop
 function onAccelBack(){
    console.log('Close Screen and Stop Loop');
@@ -92,7 +99,8 @@ function onPeek(e){
          yAxisArray.push = e.accel.y;
          zAxisArray.push = e.accel.z;
          console.log('SampleTaken');
-         counter = counter++;
+         counter++;
+         console.log(counter);
          insertCounterElements();       
       }
       else{
@@ -127,8 +135,12 @@ function insertCounterElements() {
 
 //Insert onto screen
 function insertEndScreenElements() { 
-   var xNoise = [xAxisArray[0]]
-   CounterText.text("Min X Value: " +xAxisArray[0],yAxisArray[0],zAxisArray[0]);
-   CountScreen.insert(1,CounterText);
+   var xNoise = (xAxisArray[noOfTakenSamples]-xAxisArray[0]);
+   NoiseXText.text("Noise Value for X: " +xNoise);
+   MinXText.text("Min Value for X: " +xAxisArray[0]);
+   MaxXText.text("Max Value for X: " +xAxisArray[noOfTakenSamples]);
+   CountScreen.insert(1,NoiseXText);
+   CountScreen.insert(2,MinXText);
+   CountScreen.insert(3,MaxXText);
    CountScreen.show();
 }

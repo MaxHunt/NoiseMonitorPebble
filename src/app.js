@@ -28,13 +28,13 @@ var NoiseYText = new UI.Text({ position: new Vector2(0,50), size: new Vector2(14
 var NoiseZText = new UI.Text({ position: new Vector2(0,75), size: new Vector2(144, 168) });
 var MinXText = new UI.Text({ position: new Vector2(0,110), size: new Vector2(144, 168) });
 var MinYText = new UI.Text({ position: new Vector2(0,135), size: new Vector2(144, 168) });
-var MinZText = new UI.Text({ position: new Vector2(0,180), size: new Vector2(144, 168) });
-var MaxXText = new UI.Text({ position: new Vector2(0,220), size: new Vector2(144, 168) });
-var MaxYText = new UI.Text({ position: new Vector2(0,245), size: new Vector2(144, 168) });
-var MaxZText = new UI.Text({ position: new Vector2(0,270), size: new Vector2(144, 168) });
-var AveXText = new UI.Text({ position: new Vector2(0,315), size: new Vector2(144, 168) });
-var AveYText = new UI.Text({ position: new Vector2(0,330), size: new Vector2(144, 168) });
-var AveZText = new UI.Text({ position: new Vector2(0,355), size: new Vector2(144, 168) });
+var MinZText = new UI.Text({ position: new Vector2(0,160), size: new Vector2(144, 168) });
+var MaxXText = new UI.Text({ position: new Vector2(0,195), size: new Vector2(144, 168) });
+var MaxYText = new UI.Text({ position: new Vector2(0,220), size: new Vector2(144, 168) });
+var MaxZText = new UI.Text({ position: new Vector2(0,245), size: new Vector2(144, 168) });
+var AveXText = new UI.Text({ position: new Vector2(0,280), size: new Vector2(144, 168) });
+var AveYText = new UI.Text({ position: new Vector2(0,305), size: new Vector2(144, 168) });
+var AveZText = new UI.Text({ position: new Vector2(0,330), size: new Vector2(144, 168) });
 
 
 //lower hertz Values

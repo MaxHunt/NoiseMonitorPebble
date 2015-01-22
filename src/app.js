@@ -70,7 +70,13 @@ main.on('click', 'select', onClick);
 
 function onClick(e) {
    CountScreen.on('click','back',onAccelBack);
-   //wait function Give time to Settall
+   CountScreen.on('click','select',onAccelBack);
+   //zero values
+   counter = 0;
+   xAxisArray = [];
+   yAxisArray = [];
+   zAxisArray = [];
+   //wait function Give time to Setel      
    console.log("Waiting");
    setTimeout(function () {
       inNoiseMon = true;
@@ -165,7 +171,7 @@ function insertEndScreenElements() {
    NoiseZText.text("Noise Z Value: " +zNoise);
    MinZText.text("Min Z Value: " +zAxisArray[0]);
    MaxZText.text("Max Z Value: " +zAxisArray[(noOfTakenSamples-1)]);
-   AveYText.text('Ave Z Value: ' +(sumz/zAxisArray.length));
+   AveZText.text('Ave Z Value: ' +(sumz/zAxisArray.length));
    //Remove the text from the Card
    CountScreen.remove(CounterText);
    //Insert new elements

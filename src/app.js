@@ -18,7 +18,7 @@ var UI = require('ui');
 //get vector Pebble Libary
 var Vector2 = require('vector2');
 //Screen for real time results
-var CountScreen = new UI.Window();
+var CountScreen = new UI.Window({scrollable: true});
 //Elements for AccelerometerScreen
 var TitleText = new UI.Text({ position: new Vector2(0,0), size: new Vector2(144, 168) });
 var CounterText = new UI.Text({ position: new Vector2(0,25), size: new Vector2(144, 168) });
@@ -26,15 +26,15 @@ var CounterText = new UI.Text({ position: new Vector2(0,25), size: new Vector2(1
 var NoiseXText = new UI.Text({ position: new Vector2(0,25), size: new Vector2(144, 168) });
 var NoiseYText = new UI.Text({ position: new Vector2(0,50), size: new Vector2(144, 168) });
 var NoiseZText = new UI.Text({ position: new Vector2(0,75), size: new Vector2(144, 168) });
-var MinXText = new UI.Text({ position: new Vector2(0,100), size: new Vector2(144, 168) });
-var MinYText = new UI.Text({ position: new Vector2(0,125), size: new Vector2(144, 168) });
-var MinZText = new UI.Text({ position: new Vector2(0,150), size: new Vector2(144, 168) });
-var MaxXText = new UI.Text({ position: new Vector2(0,200), size: new Vector2(144, 168) });
-var MaxYText = new UI.Text({ position: new Vector2(0,225), size: new Vector2(144, 168) });
-var MaxZText = new UI.Text({ position: new Vector2(0,250), size: new Vector2(144, 168) });
-var AveXText = new UI.Text({ position: new Vector2(0,275), size: new Vector2(144, 168) });
-var AveYText = new UI.Text({ position: new Vector2(0,300), size: new Vector2(144, 168) });
-var AveZText = new UI.Text({ position: new Vector2(0,325), size: new Vector2(144, 168) });
+var MinXText = new UI.Text({ position: new Vector2(0,110), size: new Vector2(144, 168) });
+var MinYText = new UI.Text({ position: new Vector2(0,135), size: new Vector2(144, 168) });
+var MinZText = new UI.Text({ position: new Vector2(0,180), size: new Vector2(144, 168) });
+var MaxXText = new UI.Text({ position: new Vector2(0,220), size: new Vector2(144, 168) });
+var MaxYText = new UI.Text({ position: new Vector2(0,245), size: new Vector2(144, 168) });
+var MaxZText = new UI.Text({ position: new Vector2(0,270), size: new Vector2(144, 168) });
+var AveXText = new UI.Text({ position: new Vector2(0,315), size: new Vector2(144, 168) });
+var AveYText = new UI.Text({ position: new Vector2(0,330), size: new Vector2(144, 168) });
+var AveZText = new UI.Text({ position: new Vector2(0,355), size: new Vector2(144, 168) });
 
 
 //lower hertz Values
@@ -95,9 +95,9 @@ function onPeek(e){
    if (counter<noOfTakenSamples){
       if (inNoiseMon === true){
          console.log('Taking Sample'); 
-         xAxisArray.push = e.accel.x;
-         yAxisArray.push = e.accel.y;
-         zAxisArray.push = e.accel.z;
+         xAxisArray.push(e.accel.x);
+         yAxisArray.push(e.accel.y);
+         zAxisArray.push(e.accel.z);
          console.log('SampleTaken');
          counter++;
          console.log(counter);
@@ -134,13 +134,52 @@ function insertCounterElements() {
 }
 
 //Insert onto screen
-function insertEndScreenElements() { 
-   var xNoise = (xAxisArray[noOfTakenSamples]-xAxisArray[0]);
-   NoiseXText.text("Noise Value for X: " +xNoise);
-   MinXText.text("Min Value for X: " +xAxisArray[0]);
-   MaxXText.text("Max Value for X: " +xAxisArray[noOfTakenSamples]);
+function insertEndScreenElements() {
+   //change title
+   TitleText.text('Result Screen');
+   CountScreen.insert(0,TitleText);
+   //calculate noise of calculation
+   var xNoise = Math.abs((xAxisArray[(noOfTakenSamples-1)])-xAxisArray[0]);
+   var yNoise = Math.abs((yAxisArray[(noOfTakenSamples-1)])-yAxisArray[0]);
+   var zNoise = Math.abs((zAxisArray[(noOfTakenSamples-1)])-zAxisArray[0]);
+   //Calculate Averages
+   var sumx= 0;
+   var sumy= 0;
+   var sumz= 0;
+   for( var i = 0; i < xAxisArray.length; i++ ){
+      sumx += xAxisArray[i];
+      sumy += yAxisArray[i];
+      sumz += zAxisArray[i];
+   }
+   //X Results
+   NoiseXText.text("Noise X Value: " +xNoise);
+   MinXText.text('Min X Value: ' +xAxisArray[0]);
+   MaxXText.text('Max X Value: ' +xAxisArray[(noOfTakenSamples-1)]);
+   AveXText.text('Ave X Value: ' +(sumx/xAxisArray.length));
+   //Y Results
+   NoiseYText.text("Noise Y Value: " +yNoise);
+   MinYText.text("Min Y Value: " +yAxisArray[0]);
+   MaxYText.text("Max Y Value: " +yAxisArray[(noOfTakenSamples-1)]);
+   AveYText.text('Ave Y Value: ' +(sumy/yAxisArray.length));
+   //Z Results
+   NoiseZText.text("Noise Z Value: " +zNoise);
+   MinZText.text("Min Z Value: " +zAxisArray[0]);
+   MaxZText.text("Max Z Value: " +zAxisArray[(noOfTakenSamples-1)]);
+   AveYText.text('Ave Z Value: ' +(sumz/zAxisArray.length));
+   //Remove the text from the Card
+   CountScreen.remove(CounterText);
+   //Insert new elements
    CountScreen.insert(1,NoiseXText);
-   CountScreen.insert(2,MinXText);
-   CountScreen.insert(3,MaxXText);
+   CountScreen.insert(2,NoiseYText);
+   CountScreen.insert(3,NoiseZText);
+   CountScreen.insert(4,MinXText);
+   CountScreen.insert(5,MinYText);
+   CountScreen.insert(6,MinZText);
+   CountScreen.insert(7,MaxXText);
+   CountScreen.insert(8,MaxYText);
+   CountScreen.insert(9,MaxZText);
+   CountScreen.insert(10,AveXText);
+   CountScreen.insert(11,AveYText);
+   CountScreen.insert(12,AveZText);
    CountScreen.show();
 }

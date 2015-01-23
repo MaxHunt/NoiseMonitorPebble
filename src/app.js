@@ -56,7 +56,7 @@ var main = new UI.Card({
    subtitle: 'Noise Calculator',
    body: 'Press the select button to start the Noise Monitor. The amount of smaples to be taken is ' + 
           noOfTakenSamples +
-         '. Once pressed you have 5 seconds before the meseaurment starts to place the pebble on a stable surface.'  ,
+         '. Once pressed you have 3 seconds before the meseaurment starts to place the pebble on a stable surface.'  ,
    scrollable: true
 });
 
@@ -69,8 +69,8 @@ main.on('click', 'select', onClick);
 
 
 function onClick(e) {
-   //CountScreen.on('click','back',onAccelBack);
-   //CountScreen.on('click','select',onAccelBack);
+   CountScreen.on('click','back',onAccelBack);
+   CountScreen.on('click','select',onAccelBack);
    try{
    //if the app is being used over and over, remove previous awsners
    CountScreen.hide();
@@ -121,7 +121,8 @@ function onClick(e) {
 function onAccelBack(){
    console.log('Close Screen and Stop Loop');
    inNoiseMon = false;
-   CountScreen.hide();   
+   CountScreen.hide();
+   main.hide();
 }
 //Get Values for Acelerometer
 function onPeek(e){

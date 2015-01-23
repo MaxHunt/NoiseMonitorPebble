@@ -8,6 +8,9 @@
  * By Max Hunt - 609556
  * Date - 22/01/2015
  */
+//global setting for webview
+var settings = require('settings');
+settings.option('Number of Samples', 25);
 //include Accel Pebble Libary
 var Accel = require('ui/accel');
 //iniate acceleometer
@@ -43,7 +46,7 @@ Accel.config({
    subscribe: false
 });
 
-var noOfTakenSamples = 25; //Number of sample taken inorder to reach Noise conclutson
+var noOfTakenSamples = settings.option('Number of Samples'); //Number of sample taken inorder to reach Noise conclutson
 var counter = 0;
 var xAxisArray = [];
 var yAxisArray = [];
@@ -68,7 +71,7 @@ main.show();
 main.on('click', 'select', onClick);
 
 
-function onClick(e) {
+function onClick(e) {   
    CountScreen.on('click','back',onAccelBack);
    CountScreen.on('click','select',onAccelBack);
    try{

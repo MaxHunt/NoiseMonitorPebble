@@ -8,7 +8,6 @@
  * By Max Hunt - 609556
  * Date - 22/01/2015
  */
-
 //include Accel Pebble Libary
 var Accel = require('ui/accel');
 //iniate acceleometer
@@ -49,7 +48,6 @@ var counter = 0;
 var xAxisArray = [];
 var yAxisArray = [];
 var zAxisArray = [];
-
 var inNoiseMon = false;
 
 //start App screen
@@ -63,16 +61,19 @@ var main = new UI.Card({
 });
 
 //start APP
+
 console.log("App started");
+CountScreen.hide();
 main.show();
 main.on('click', 'select', onClick);
 
 
 function onClick(e) {
-   CountScreen.on('click','back',onAccelBack);
-   CountScreen.on('click','select',onAccelBack);
+   //CountScreen.on('click','back',onAccelBack);
+   //CountScreen.on('click','select',onAccelBack);
    try{
    //if the app is being used over and over, remove previous awsners
+   CountScreen.hide();
    CountScreen.remove(NoiseXText);
    CountScreen.remove(NoiseYText);
    CountScreen.remove(NoiseZText);
@@ -88,12 +89,7 @@ function onClick(e) {
    }
    catch(arg){
       console.log(arg);
-   }
-   //zero values
-   counter = 0;
-   xAxisArray = [];
-   yAxisArray = [];
-   zAxisArray = [];
+   }  
    inNoiseMon = true;
    console.log("Waiting");
    TitleText.text('3 seconds until measure. Please place Pebble on a flat surface.');
@@ -137,17 +133,23 @@ function onPeek(e){
          yAxisArray.push(e.accel.y);
          zAxisArray.push(e.accel.z);
          console.log('SampleTaken');
-         counter++;
-         console.log(counter);
-         insertCounterElements();       
+         var deadlock = false;
+         if (deadlock === false){
+            deadlock = true;
+            counter++;
+            console.log(counter);
+            insertCounterElements(); 
+            deadlock = false;
+         }
+         else{
+         }               
       }
       else{
          console.log("Stopped Reading");
          CountScreen.hide();
          Accel.config({
             subscribe: false
-         });
-      
+         });      
       }
    }
    else{
@@ -206,6 +208,11 @@ function insertEndScreenElements() {
    AveZText.text('Ave Z Value: ' +(sumz/zAxisArray.length));
    //Remove the text from the Card
    CountScreen.remove(CounterText);
+   //zero values for next time
+   counter = 0;
+   xAxisArray = [];
+   yAxisArray = [];
+   zAxisArray = [];
    //Insert new elements
    CountScreen.insert(1,NoiseXText);
    CountScreen.insert(2,NoiseYText);

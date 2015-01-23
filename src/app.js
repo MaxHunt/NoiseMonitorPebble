@@ -71,22 +71,54 @@ main.on('click', 'select', onClick);
 function onClick(e) {
    CountScreen.on('click','back',onAccelBack);
    CountScreen.on('click','select',onAccelBack);
+   try{
+   //if the app is being used over and over, remove previous awsners
+   CountScreen.remove(NoiseXText);
+   CountScreen.remove(NoiseYText);
+   CountScreen.remove(NoiseZText);
+   CountScreen.remove(MinXText);
+   CountScreen.remove(MinYText);
+   CountScreen.remove(MinZText);
+   CountScreen.remove(MaxXText);
+   CountScreen.remove(MaxYText);
+   CountScreen.remove(MaxZText);
+   CountScreen.remove(AveXText);
+   CountScreen.remove(AveYText);
+   CountScreen.remove(AveZText);
+   }
+   catch(arg){
+      console.log(arg);
+   }
    //zero values
    counter = 0;
    xAxisArray = [];
    yAxisArray = [];
    zAxisArray = [];
-   //wait function Give time to Setel      
+   inNoiseMon = true;
    console.log("Waiting");
-   setTimeout(function () {
-      inNoiseMon = true;
-      console.log('Entered Counter');
-      TitleText.text('Counter Screen');
+   TitleText.text('3 seconds until measure. Please place Pebble on a flat surface.');
+   CountScreen.insert(0,TitleText);
+   console.log("Title text added");
+   CountScreen.show();
+   setTimeout(function (){
+      CountScreen.remove(TitleText);
+      TitleText.text('2 seconds until measure. Please place Pebble on a flat surface.');
       CountScreen.insert(0,TitleText);
       console.log("Title text added");
-      CountScreen.show();         
-      Accel.on('data', onPeek);      
-   }, 3000);           
+      setTimeout(function (){
+         CountScreen.remove(TitleText);
+         TitleText.text('1 seconds until measure. Please place Pebble on a flat surface.');
+         CountScreen.insert(0,TitleText);
+         console.log('Title text added');         
+         setTimeout(function () {
+            console.log('Entered Counter');
+            CountScreen.remove(TitleText);
+            TitleText.text('Measuring');
+            CountScreen.insert(0,TitleText);
+            Accel.on('data', onPeek);      
+         }, 1000);
+      }, 1000);
+   }, 1000);
 }
 
 //Close Screen and Stop loop
